@@ -1,3 +1,5 @@
+import { Values } from "zod";
+
 // We can construct these statically to create a bounds on the system state and api interaction
 const pokemonNames = [
     "bulbasaur",
@@ -169,3 +171,13 @@ type PokemonNames = (typeof pokemonNames)[number];
 type PokemonId<P extends PokemonNames> = {
     [k in Indices<typeof pokemonNames> as (typeof pokemonNames)[k]]: Inc<k>;
 }[P];
+
+type PokemonUrl<P extends PokemonNames> = `https://pokeapi.co/api/v2/pokemon/${PokemonId<k>}/`;
+
+type PokemonApiList = { [k in PokemonNames]: {
+    name: k,
+    url: PokemonUrl<k> } }[PokemonNames];
+
+async function fetchPokemon151() ->  {
+    return await fetch(POKEMON_API_ENDPOINT).then((res) => res.json());
+}
