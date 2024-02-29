@@ -2,9 +2,8 @@ import Home from "@/components/templates/Home";
 import { collectPokemonData } from "@/lib/pokemon";
 
 export default async function Page() {
-  const pokemon = await collectPokemonData();
-  console.log(pokemon[0]);
+  const pokemonList = await collectPokemonData();
   /* console.log(x[1].species.growth_rate); */
 
-  return <Home />;
+  return <Home {...{ pokemonList }} />;
 }

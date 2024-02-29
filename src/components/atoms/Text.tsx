@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
 
-const Title = ({
+const Text = ({
   children,
   className = "",
 }: PropsWithChildren & { className?: string }) => (
-  <h1 className={`${className} font-bold`}>{children}</h1>
+  <p className={`${className} font-bold`}>{children}</p>
 );
 
-export default Title;
+export default Text;

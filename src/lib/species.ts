@@ -19,12 +19,12 @@ export const PokemonSpeciesSchema = z.object({
         .positive()
         .max(255)
         .transform((n) => (n / 255) * 100),
-    base_happiness: z
-        .number()
-        .int()
-        .positive()
-        .max(255)
-        .transform((n) => (n / 255) * 100),
+    // base_happiness: z
+    //     .number()
+    //     .int()
+    //     .positive()
+    //     .max(255)
+    //     .transform((n) => (n / 255) * 100),
     is_baby: z.boolean(),
     is_legendary: z.boolean(),
     is_mythical: z.boolean(),

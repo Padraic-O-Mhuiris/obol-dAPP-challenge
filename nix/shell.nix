@@ -11,6 +11,8 @@
         nodejs_21
         yarn
         nodePackages.typescript-language-server
+        nodePackages_latest.prettier
+
       ];
     };
   };

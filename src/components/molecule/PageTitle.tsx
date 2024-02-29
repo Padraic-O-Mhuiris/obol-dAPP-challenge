@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import Image from "next/image";
+import Title from "../atoms/Title";
 
 const PageTitle = ({ children }: PropsWithChildren) => (
   <div className="flex flex-row">
@@ -13,9 +14,9 @@ const PageTitle = ({ children }: PropsWithChildren) => (
           sizes="(max-height: 28px)"
         />
       </div>
-      <div className="justify-self-start">
-        <h1 className="font-bold text-[28px] text-muted">{children}</h1>
-      </div>
+      <Title className="text-[28px] text-muted justify-self-start">
+        {children}
+      </Title>
     </div>
   </div>
 );
