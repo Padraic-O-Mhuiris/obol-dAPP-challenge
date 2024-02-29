@@ -1,15 +1,10 @@
-import Image from "next/image";
+import Home from "@/components/templates/Home";
+import { collectPokemonData } from "@/lib/pokemon";
 
-const POKEMON_API_ENDPOINT = "https://pokeapi.co/api/v2/pokemon?limit=151";
+export default async function Page() {
+  const pokemon = await collectPokemonData();
+  console.log(pokemon[0]);
+  /* console.log(x[1].species.growth_rate); */
 
-async function fetchPokemonData() {
-  return await fetch(POKEMON_API_ENDPOINT).then((res) => res.json());
-}
-
-export default async function Home() {
-  const pokemonData: any[] = await fetchPokemonData();
-  console.log(pokemonData);
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24"></main>
-  );
+  return <Home />;
 }
