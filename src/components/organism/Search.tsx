@@ -7,13 +7,15 @@ const Search = ({
   resetFilter,
   value,
   isError,
+  className = "",
 }: {
   handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   resetFilter: (e: React.MouseEvent<HTMLButtonElement>) => void;
   value: string;
   isError: boolean;
+  className?: string;
 }) => (
-  <div className="flex flex-row items-center">
+  <div className={`${className} flex flex-row items-center`}>
     <Title className="text-[32px] text-light">Search</Title>
     <Input
       handleFilterChange={handleFilterChange}
