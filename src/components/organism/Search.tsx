@@ -6,16 +6,19 @@ const Search = ({
   handleFilterChange,
   resetFilter,
   value,
+  isError,
 }: {
   handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  resetFilter: () => void;
+  resetFilter: (e: React.MouseEvent<HTMLButtonElement>) => void;
   value: string;
+  isError: boolean;
 }) => (
   <div className="flex flex-row items-center">
     <Title className="text-[32px] text-light">Search</Title>
     <Input
-      {...{ handleFilterChange, value }}
-      className="grow ml-[24px] min-w-[400px] max-w-[635px]"
+      handleFilterChange={handleFilterChange}
+      value={value}
+      className={`${isError ? "border-red-500" : ""} grow ml-[24px] min-w-[400px] max-w-[635px]`}
     />
     <Button onClick={resetFilter} className="ml-[24px]">
       Reset
