@@ -1,8 +1,18 @@
-const Input = ({ className = "" }: { className?: string }) => (
+const Input = ({
+  className = "",
+  handleFilterChange,
+  value,
+}: {
+  className?: string;
+  handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+}) => (
   <div
     className={`${className} bg-secondary py-[12px] px-[16px] border-[2px] border-quartary rounded-[4px]`}
   >
     <input
+      onChange={handleFilterChange}
+      value={value}
       type="text"
       name="pokemon"
       id="pokemon"
