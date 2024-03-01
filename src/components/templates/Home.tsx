@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Spinner from "../atoms/Spinner";
 import Image from "next/image";
 import Text from "../atoms/Text";
+import NavBar from "../organism/NavBar";
 
 const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
   const [filterString, setFilterString] = useState("");
@@ -41,44 +42,47 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
   const isError = !filteredList.length;
 
   return (
-    <main className="container mx-auto min-h-screen">
-      <div className="mt-[80px]">
-        <Search
-          handleFilterChange={handleFilterChange}
-          resetFilter={resetFilter}
-          value={filterString}
-          isError={isError}
-        />
-      </div>
-      {!isError ? (
-        !isLoading ? (
-          <div className="mt-[80px] grid grid-cols-3 gap-[80px]">
-            {filteredList.map((p) => (
-              <div key={p.name}>
-                <Card pokemon={p} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex justify-center mt-[160px]">
-            <Spinner className="text-grass_light" />
-          </div>
-        )
-      ) : (
-        <div className="flex justify-center mt-[80px]">
-          <div className="text-center">
-            <Image
-              className="rounded-[16px]"
-              src={"/suprised_pikachu.png"}
-              height={680}
-              width={592}
-              alt="suprised pikachu meme"
-            />
-            <Text className="mt-[16px]">No Pokemon found!</Text>
-          </div>
+    <>
+      <NavBar />
+      <main className="container mx-auto min-h-screen">
+        <div className="mt-[80px]">
+          <Search
+            handleFilterChange={handleFilterChange}
+            resetFilter={resetFilter}
+            value={filterString}
+            isError={isError}
+          />
         </div>
-      )}
-    </main>
+        {!isError ? (
+          !isLoading ? (
+            <div className="mt-[80px] grid grid-cols-3 gap-[80px]">
+              {filteredList.map((p) => (
+                <div key={p.name}>
+                  <Card pokemon={p} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center mt-[160px]">
+              <Spinner className="text-grass_light" />
+            </div>
+          )
+        ) : (
+          <div className="flex justify-center mt-[80px]">
+            <div className="text-center">
+              <Image
+                className="rounded-[16px]"
+                src={"/suprised_pikachu.png"}
+                height={680}
+                width={592}
+                alt="suprised pikachu meme"
+              />
+              <Text className="mt-[16px]">No Pokemon found!</Text>
+            </div>
+          </div>
+        )}
+      </main>
+    </>
   );
 };
 
