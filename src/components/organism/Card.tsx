@@ -8,10 +8,12 @@ import Audio from "../molecule/Audio";
 const Card = ({
   pokemon,
   disabled,
+  isCollected,
   onClick,
 }: {
   pokemon: Pokemon;
   disabled: boolean;
+  isCollected: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }) => (
   <div className="bg-tertiary border-quartary border-[2px] rounded-[12px] min-w-[395px]">
@@ -29,7 +31,7 @@ const Card = ({
         <div className="mt-[12px] grid grid-cols-2 gap-y-[8px] gap-x-[16px]">
           <>
             <Text className="text-body text-right">Height:</Text>
-            <Text className="text-body text-left">{pokemon.height} cm</Text>
+            <Text className="text-body text-left">{pokemon.height} m</Text>
           </>
           <>
             <Text className="text-body text-right">Weight:</Text>
@@ -42,8 +44,12 @@ const Card = ({
         </div>
       </div>
 
-      <Button disabled={disabled} onClick={onClick} className="mt-[32px]">
-        Collect
+      <Button
+        disabled={disabled || isCollected}
+        onClick={onClick}
+        className="mt-[32px]"
+      >
+        {isCollected ? "Collected" : "Collect"}
       </Button>
       <ExternalLink
         url={`https://bulbapedia.bulbagarden.net/wiki/${pokemon.name}`}

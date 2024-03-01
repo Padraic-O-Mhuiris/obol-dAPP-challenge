@@ -22,9 +22,13 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
   const [filterString, setFilterString] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [filteredList, setFilteredList] = useState<Pokemon[]>(pokemonList);
-  const [collectedPokemon, setCollectedPokemon] = useState<
+  const [signedPokemon, setSignedPokemon] = useState<
     { pokemon: Pokemon; signature: string } | undefined
   >();
+
+  const [collectedPokemon, setCollectedPokemon] = useState<{
+    [k in string]: Pokemon;
+  }>({});
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterString(e.target.value);
@@ -35,7 +39,7 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
     setFilterString("");
   };
 
-  const closeModal = () => setCollectedPokemon(undefined);
+  const closeModal = () => setSignedPokemon(undefined);
 
   async function onSignMessage(p: Pokemon) {
     const provider = new BrowserProvider(walletProvider!);
@@ -43,7 +47,8 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
 
     try {
       const signature = await signer?.signMessage(p.name);
-      setCollectedPokemon({ pokemon: p, signature });
+      setSignedPokemon({ pokemon: p, signature });
+      setCollectedPokemon({ ...collectedPokemon, [p.name]: p });
     } catch (e) {}
   }
 
@@ -68,11 +73,11 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
   return (
     <>
       <NavBar />
-      <Modal showModal={!!collectedPokemon} closeModal={closeModal}>
-        {collectedPokemon ? (
+      <Modal showModal={!!signedPokemon} closeModal={closeModal}>
+        {signedPokemon ? (
           <Tooltip
-            pokemon={collectedPokemon.pokemon}
-            signature={collectedPokemon.signature}
+            pokemon={signedPokemon.pokemon}
+            signature={signedPokemon.signature}
           />
         ) : undefined}
       </Modal>
@@ -91,6 +96,7 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
                 <div key={p.name}>
                   <Card
                     disabled={!isConnected}
+                    isCollected={!!collectedPokemon[p.name]}
                     pokemon={p}
                     onClick={() => onSignMessage(p)}
                   />
