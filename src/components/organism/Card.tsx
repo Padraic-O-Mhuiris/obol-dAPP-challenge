@@ -5,7 +5,15 @@ import ExternalLink from "../molecule/ExternalLink";
 import Text from "../atoms/Text";
 import Audio from "../molecule/Audio";
 
-const Card = ({ pokemon }: { pokemon: Pokemon }) => (
+const Card = ({
+  pokemon,
+  disabled,
+  onClick,
+}: {
+  pokemon: Pokemon;
+  disabled: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) => (
   <div className="bg-tertiary border-quartary border-[2px] rounded-[12px] min-w-[395px]">
     <div className="bg-secondary flex justify-center border-quartary border-b-[2px] rounded-t-[12px]">
       <Image
@@ -34,7 +42,9 @@ const Card = ({ pokemon }: { pokemon: Pokemon }) => (
         </div>
       </div>
 
-      <Button className="mt-[32px]">Collect</Button>
+      <Button disabled={disabled} onClick={onClick} className="mt-[32px]">
+        Collect
+      </Button>
       <ExternalLink
         url={`https://bulbapedia.bulbagarden.net/wiki/${pokemon.name}`}
       />

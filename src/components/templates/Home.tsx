@@ -7,11 +7,24 @@ import { useEffect, useState } from "react";
 import Spinner from "../atoms/Spinner";
 import NavBar from "../organism/NavBar";
 import NotFound from "../molecule/NotFound";
+import { BrowserProvider } from "ethers";
+import {
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers/react";
+import Modal from "../organism/Modal";
+import Tooltip from "../organism/Tooltip";
 
 const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
+  const { walletProvider } = useWeb3ModalProvider();
+  const { isConnected } = useWeb3ModalAccount();
+
   const [filterString, setFilterString] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [filteredList, setFilteredList] = useState<Pokemon[]>(pokemonList);
+  const [collectedPokemon, setCollectedPokemon] = useState<
+    { pokemon: Pokemon; signature: string } | undefined
+  >();
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterString(e.target.value);
@@ -21,6 +34,18 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
     e.preventDefault();
     setFilterString("");
   };
+
+  const closeModal = () => setCollectedPokemon(undefined);
+
+  async function onSignMessage(p: Pokemon) {
+    const provider = new BrowserProvider(walletProvider!);
+    const signer = await provider.getSigner();
+
+    try {
+      const signature = await signer?.signMessage(p.name);
+      setCollectedPokemon({ pokemon: p, signature });
+    } catch (e) {}
+  }
 
   // debounced filter
   useEffect(() => {
@@ -43,6 +68,14 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
   return (
     <>
       <NavBar />
+      <Modal showModal={!!collectedPokemon} closeModal={closeModal}>
+        {collectedPokemon ? (
+          <Tooltip
+            pokemon={collectedPokemon.pokemon}
+            signature={collectedPokemon.signature}
+          />
+        ) : undefined}
+      </Modal>
       <main className="container mx-auto min-h-screen">
         <Search
           className="mt-[80px]"
@@ -56,7 +89,11 @@ const Home = ({ pokemonList }: { pokemonList: Pokemon[] }) => {
             <div className="mt-[80px] grid grid-cols-3 gap-[80px]">
               {filteredList.map((p) => (
                 <div key={p.name}>
-                  <Card pokemon={p} />
+                  <Card
+                    disabled={!isConnected}
+                    pokemon={p}
+                    onClick={() => onSignMessage(p)}
+                  />
                 </div>
               ))}
             </div>
