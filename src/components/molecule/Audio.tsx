@@ -3,7 +3,13 @@
 import { useCallback, useEffect } from "react";
 import { useAudioPlayer } from "react-use-audio-player";
 
-const Audio = ({ oggUrl }: { oggUrl: string }) => {
+const Audio = ({
+  oggUrl,
+  className = "",
+}: {
+  oggUrl: string;
+  className?: string;
+}) => {
   const song = useAudioPlayer();
 
   useEffect(() => {
@@ -19,7 +25,7 @@ const Audio = ({ oggUrl }: { oggUrl: string }) => {
   }, [song.togglePlayPause]);
 
   return (
-    <div onClick={togglePlayPause} className="cursor-pointer">
+    <div onClick={togglePlayPause} className={`${className} cursor-pointer`}>
       {song.playing ? "⏸️" : "▶️"}
     </div>
   );

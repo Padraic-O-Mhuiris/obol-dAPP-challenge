@@ -8,5 +8,5 @@ export const NamedApiResourceSchema = z.object({
 export type NamedApiResource = z.infer<typeof NamedApiResourceSchema>;
 
 export async function fetch_json(url: string): Promise<string> {
-    return await fetch(url).then((res) => res.json());
+    return await fetch(url, { cache: "force-cache" }).then((res) => res.json());
 }
